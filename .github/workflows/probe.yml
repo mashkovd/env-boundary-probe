@@ -1,0 +1,33 @@
+name: probe
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  control-repo-secret:
+    runs-on: ubuntu-latest
+    steps:
+      - run: '[ -n "$S" ] && echo RESULT=SECRET_PRESENT || echo RESULT=SECRET_ABSENT'
+        env: { S: "${{ secrets.REPO_DUMMY }}" }
+  env-admin-bypass-on:
+    runs-on: ubuntu-latest
+    environment: probe-bypass-on
+    steps:
+      - run: '[ -n "$S" ] && echo RESULT=SECRET_PRESENT || echo RESULT=SECRET_ABSENT'
+        env: { S: "${{ secrets.ENV_DUMMY }}" }
+  env-admin-bypass-off:
+    runs-on: ubuntu-latest
+    environment: probe-bypass-off
+    steps:
+      - run: '[ -n "$S" ] && echo RESULT=SECRET_PRESENT || echo RESULT=SECRET_ABSENT'
+        env: { S: "${{ secrets.ENV_DUMMY }}" }
+  env-reviewer:
+    runs-on: ubuntu-latest
+    environment: probe-reviewer
+    steps:
+      - run: '[ -n "$S" ] && echo RESULT=SECRET_PRESENT || echo RESULT=SECRET_ABSENT'
+        env: { S: "${{ secrets.ENV_DUMMY }}" }
+  env-name-only-no-env:
+    runs-on: ubuntu-latest
+    steps:
+      - run: '[ -n "$S" ] && echo RESULT=SECRET_PRESENT || echo RESULT=SECRET_ABSENT'
+        env: { S: "${{ secrets.ENV_DUMMY }}" }
